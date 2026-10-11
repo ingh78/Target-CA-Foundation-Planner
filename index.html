@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Target CA — Foundation Planner</title>
+<style>
+:root{--bg:#f5f5f7;--tx:#1d1d1f;--mu:#6e6e73;--gl:rgba(255,255,255,.62);--bd:rgba(255,255,255,.7);--ac:#0071e3;--ok:#30d158;--wn:#ff9f0a;--bad:#ff453a;--sh:0 8px 32px rgba(0,0,0,.08);box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media(prefers-color-scheme:dark){:root:not([data-theme=light]){--bg:#000;--tx:#f5f5f7;--mu:#98989d;--gl:rgba(40,40,46,.6);--bd:rgba(255,255,255,.1);--sh:0 8px 32px rgba(0,0,0,.5)}}
+*{box-sizing:border-box;margin:0}html{scroll-padding-top:env(safe-area-inset-top,0px)}
+body{font-family:-apple-system,BlinkMacSystemFont,"SF Pro Display","Inter","Segoe UI",Roboto,sans-serif;background:var(--bg);color:var(--tx);min-height:100vh;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+.orb{position:fixed;border-radius:50%;filter:blur(90px);opacity:.5;z-index:0;animation:fl 18s ease-in-out infinite alternate}
+.o1{width:420px;height:420px;background:#5e9bff;top:-100px;left:-80px}.o2{width:380px;height:380px;background:#bf5af2;bottom:-100px;right:-60px;animation-delay:-6s}.o3{width:300px;height:300px;background:#30d5c8;top:40%;left:55%;opacity:.3;animation-delay:-11s}
+@keyframes fl{to{transform:translate(60px,40px) scale(1.15)}}
+.glass{background:var(--gl);backdrop-filter:blur(30px) saturate(180%);-webkit-backdrop-filter:blur(30px) saturate(180%);border:1px solid var(--bd);border-radius:22px;box-shadow:var(--sh)}
+#app,#auth{position:relative;z-index:1;max-width:980px;margin:0 auto;padding:16px 16px 90px}
+.hide{display:none!important}
+@keyframes up{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+.view>*{animation:up .5s cubic-bezier(.2,.8,.2,1) both}.view>*:nth-child(2){animation-delay:.06s}.view>*:nth-child(3){animation-delay:.12s}.view>*:nth-child(4){animation-delay:.18s}
+#auth{display:flex;min-height:100vh;align-items:center;justify-content:center}
+.ac{width:100%;max-width:400px;padding:34px 28px;text-align:center}
+.logo{width:64px;height:64px;border-radius:16px;background:linear-gradient(135deg,#0a84ff,#bf5af2);margin:0 auto 14px;display:grid;place-items:center;font-size:30px;color:#fff;box-shadow:0 10px 30px rgba(10,132,255,.4)}
+h1{font-size:28px;letter-spacing:-.02em;font-weight:700}h2{font-size:20px;letter-spacing:-.01em;margin-bottom:10px}
+.mu{color:var(--mu);font-size:14px}
+input,select,textarea{width:100%;padding:13px 15px;border-radius:13px;border:1px solid var(--bd);background:rgba(127,127,127,.12);color:var(--tx);font:inherit;font-size:16px;outline:none;transition:.25s;margin-top:10px}
+input:focus,select:focus,textarea:focus{border-color:var(--ac);box-shadow:0 0 0 4px rgba(0,113,227,.2)}
+button{font:inherit;cursor:pointer;border:0;transition:transform .2s,opacity .2s,background .25s}button:active{transform:scale(.96)}
+.btn{background:var(--ac);color:#fff;padding:13px 20px;border-radius:13px;font-weight:600;width:100%;margin-top:14px}.btn:hover{opacity:.88}
+.btn.s{background:rgba(127,127,127,.18);color:var(--tx);width:auto;padding:9px 14px;margin:0;font-size:14px}
+.seg{display:flex;background:rgba(127,127,127,.15);border-radius:12px;padding:3px;margin-top:14px}.seg button{flex:1;padding:9px;border-radius:10px;background:none;color:var(--mu);font-weight:600;font-size:14px}.seg button.on{background:var(--gl);color:var(--tx);box-shadow:0 2px 8px rgba(0,0,0,.12)}
+.err{color:var(--bad);font-size:13px;margin-top:10px;min-height:16px}
+nav{position:fixed;bottom:calc(12px + env(safe-area-inset-bottom,0px));left:50%;transform:translateX(-50%);z-index:5;display:flex;gap:2px;padding:6px;border-radius:26px;max-width:96vw;overflow-x:auto}
+nav button{background:none;color:var(--mu);padding:9px 13px;border-radius:20px;font-size:13px;font-weight:600;white-space:nowrap}nav button.on{background:var(--ac);color:#fff}
+.top{display:flex;justify-content:space-between;align-items:center;padding:8px 4px 18px}
+.grid{display:grid;gap:14px;grid-template-columns:repeat(auto-fit,minmax(260px,1fr))}
+.c{padding:20px}.big{font-size:44px;font-weight:700;letter-spacing:-.03em;line-height:1.1}
+.bar{height:8px;border-radius:8px;background:rgba(127,127,127,.2);overflow:hidden;margin-top:10px}.bar i{display:block;height:100%;border-radius:8px;background:linear-gradient(90deg,#0a84ff,#30d158);transition:width .8s cubic-bezier(.2,.8,.2,1)}
+.row{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:11px 0;border-bottom:1px solid rgba(127,127,127,.15)}.row:last-child{border:0}
+.tag{font-size:12px;padding:3px 9px;border-radius:20px;background:rgba(127,127,127,.18);font-weight:600;white-space:nowrap}
+.st0{background:rgba(127,127,127,.18)}.st1{background:rgba(255,159,10,.25);color:var(--wn)}.st2{background:rgba(48,209,88,.25);color:var(--ok)}.st3{background:rgba(10,132,255,.25);color:var(--ac)}
+.cal{display:grid;grid-template-columns:repeat(7,1fr);gap:6px}.cal div{aspect-ratio:1;border-radius:12px;display:grid;place-items:center;font-size:14px;font-weight:600;cursor:pointer;background:rgba(127,127,127,.1);transition:.25s}.cal div:hover{transform:scale(1.08)}.cal .h{aspect-ratio:auto;background:none;color:var(--mu);font-size:12px;cursor:default}.cal .h:hover{transform:none}.cal .t{outline:2px solid var(--ac)}.cal .x{background:none;cursor:default}
+.ins{padding:12px 14px;border-radius:14px;margin-top:8px;font-size:15px;line-height:1.45;background:rgba(127,127,127,.12)}.ins.g{border-left:4px solid var(--ok)}.ins.w{border-left:4px solid var(--wn)}.ins.b{border-left:4px solid var(--bad)}
+input[type=range]{padding:0;height:30px;background:none;border:0}
+.ft{text-align:center;color:var(--mu);font-size:13px;margin-top:30px;letter-spacing:.02em}.ft b{background:linear-gradient(90deg,#0a84ff,#bf5af2);-webkit-background-clip:text;background-clip:text;color:transparent}
+label{font-size:13px;color:var(--mu);display:block;margin-top:12px;font-weight:600}
+</style></head><body>
+<div class="orb o1"></div><div class="orb o2"></div><div class="orb o3"></div>
+
+<div id="auth"><div class="glass ac">
+<div class="logo">🎯</div><h1>Target CA</h1><p class="mu" style="margin-top:6px">CA Foundation · Daily Target Planner</p>
+<div class="seg" id="mode"><button class="on" data-m="in">Login</button><button data-m="up">Sign up</button></div>
+<div class="seg" id="typ"><button class="on" data-t="email">Gmail</button><button data-t="mob">Mobile</button></div>
+<input id="aid" placeholder="you@gmail.com" autocomplete="username">
+<input id="anm" class="hide" placeholder="Tumhara naam">
+<input id="apin" type="password" inputmode="numeric" maxlength="6" placeholder="PIN (4-6 digit)" autocomplete="current-password">
+<div class="err" id="aerr"></div>
+<button class="btn" id="abtn">Continue</button>
+<p class="mu" style="font-size:12px;margin-top:14px">Account is device me save hota hai (is browser me).</p>
+<div class="ft"><b>Designed by $atyam</b></div>
+</div></div>
+
+<div id="app" class="hide">
+<div class="top"><div><h1 id="hi"></h1><p class="mu" id="sub"></p></div><button class="btn s" id="out">Logout</button></div>
+<div id="v" class="view"></div>
+<div class="ft"><b>Designed by $atyam</b></div>
+<nav class="glass" id="nav"></nav>
+</div>
+
+<script>
+const S0={A:{n:"Accounting",c:"#0a84ff",ch:["Theoretical Framework","Accounting Process","Bank Reconciliation Statement","Inventories","Concept & Accounting of Depreciation","Bills of Exchange","Final Accounts of Sole Proprietors","Partnership Accounts (Basic)","Financial Statements of Not-for-Profit Orgs","Accounts from Incomplete Records","Company Accounts (Basic)"]},
+L:{n:"Business Laws & BCR",c:"#bf5af2",ch:["Indian Contract Act, 1872","Sale of Goods Act, 1930","Indian Partnership Act, 1932","Limited Liability Partnership Act, 2008","Companies Act, 2013","Negotiable Instruments Act, 1881","Part B: Business Correspondence & Reporting"]},
+Q:{n:"Quantitative Aptitude",c:"#ff9f0a",ch:["Ratio, Proportion, Indices & Logarithms","Equations","Linear Inequalities","Mathematics of Finance","Permutations & Combinations","Sequence & Series","Sets, Relations & Functions","Limits & Continuity (Basics)","Differential & Integral Calculus (Basics)","LR: Number Series, Coding-Decoding, Odd Man Out","LR: Direction Tests","LR: Seating Arrangements","LR: Blood Relations","Stats: Statistical Description of Data","Stats: Central Tendency & Dispersion","Stats: Probability","Stats: Theoretical Distributions","Stats: Correlation & Regression","Stats: Index Numbers"]},
+E:{n:"Business Economics & BCK",c:"#30d158",ch:["Introduction to Business Economics","Theory of Demand & Supply","Theory of Production & Cost","Price Determination in Different Markets","Business Cycles","Part B: Introduction to BCK","BCK: Business Environment","BCK: Business Organisations","BCK: Government Policies for Business Growth","BCK: Organisations Facilitating Business","BCK: Common Business Terminologies"]}};
+const ST=["Not started","Learning","Done","Revised"],RS=["Mood / motivation nahi tha","Phone / distraction","Target bahut zyada tha","Concept samajh nahi aaya","Health / thakaan","Ghar / dusra kaam","Plan nahi tha / late start","Other"];
+const $=s=>document.querySelector(s),mem={};
+const g=k=>{try{return localStorage.getItem(k)}catch(e){return mem[k]??null}},p=(k,v)=>{try{localStorage.setItem(k,v)}catch(e){mem[k]=v}};
+const dk=d=>{d=new Date(d);return d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0")};
+const today=()=>dk(new Date()),addD=(s,n)=>{const d=new Date(s+"T00:00");d.setDate(d.getDate()+n);return dk(d)};
+let U=null,D=null,tab="home",selD=today(),cm=new Date();
+const all=[];for(const k in S0)S0[k].ch.forEach((n,i)=>all.push({id:k+i,k,n}));
+const cname=id=>{const c=all.find(x=>x.id==id);if(c)return c.n;const x=(D.custom||[]).find(x=>x.id==id);return x?x.n:"—"};
+const allC=()=>all.concat((D.custom||[]).map(x=>({...x,k:x.k})));
+const save=()=>p("ca_d_"+U,JSON.stringify(D));
+
+// AUTH
+let am="in",at="email";
+document.querySelectorAll("#mode button").forEach(b=>b.onclick=()=>{am=b.dataset.m;document.querySelectorAll("#mode button").forEach(x=>x.classList.toggle("on",x==b));$("#anm").classList.toggle("hide",am=="in");$("#abtn").textContent=am=="in"?"Continue":"Create account"});
+document.querySelectorAll("#typ button").forEach(b=>b.onclick=()=>{at=b.dataset.t;document.querySelectorAll("#typ button").forEach(x=>x.classList.toggle("on",x==b));$("#aid").placeholder=at=="email"?"you@gmail.com":"10-digit mobile number";$("#aid").inputMode=at=="email"?"email":"numeric"});
+$("#abtn").onclick=()=>{const id=$("#aid").value.trim().toLowerCase(),pin=$("#apin").value,e=$("#aerr");
+if(at=="email"&&!/^[^\s@]+@[^\s@]+\.[a-z]{2,}$/.test(id))return e.textContent="Sahi email daalo";
+if(at=="mob"&&!/^[6-9]\d{9}$/.test(id))return e.textContent="Sahi 10-digit mobile number daalo";
+if(!/^\d{4,6}$/.test(pin))return e.textContent="PIN 4-6 digit ka hona chahiye";
+const acc=JSON.parse(g("ca_acc")||"{}");
+if(am=="up"){if(acc[id])return e.textContent="Account pehle se hai, Login karo";acc[id]={pin:btoa(pin+id),name:$("#anm").value.trim()||"Student"};p("ca_acc",JSON.stringify(acc))}
+else if(!acc[id]||acc[id].pin!=btoa(pin+id))return e.textContent="ID ya PIN galat hai";
+p("ca_ses",id);start(id)};
+function start(id){U=id;const a=JSON.parse(g("ca_acc")||"{}")[id];if(!a){p("ca_ses","");return}
+D=JSON.parse(g("ca_d_"+id)||"null")||{name:a.name,exam:"2027-01-03",goal:6,st:{},t:{},custom:[]};D.name=D.name||a.name;
+$("#auth").classList.add("hide");$("#app").classList.remove("hide");nav();render()}
+$("#out").onclick=()=>{p("ca_ses","");location.reload()};
+
+// NAV
+const TABS=[["home","Home"],["plan","Plan"],["syl","Syllabus"],["cal","Calendar"],["ins","Insights"],["pro","Profile"]];
+function nav(){$("#nav").innerHTML=TABS.map(t=>`<button data-t="${t[0]}" class="${tab==t[0]?"on":""}">${t[1]}</button>`).join("");$("#nav").onclick=e=>{if(e.target.dataset.t){tab=e.target.dataset.t;nav();render()}}}
+const daysLeft=()=>Math.ceil((new Date(D.exam+"T00:00")-new Date(today()+"T00:00"))/864e5);
+const doneCount=()=>allC().filter(c=>(D.st[c.id]||0)>=2).length;
+function render(){$("#hi").textContent="Hi, "+D.name+" 👋";$("#sub").textContent=new Date().toLocaleDateString("en-IN",{weekday:"long",day:"numeric",month:"long"});
+const v=$("#v");v.style.animation="none";v.offsetHeight;v.style.animation="";v.innerHTML=({home,plan,syl,cal,ins,pro})[tab]();bind()}
+
+function tcard(d,lbl){const t=D.t[d];if(!t)return`<div class="glass c"><h2>${lbl}</h2><p class="mu">Target set nahi hai.</p><button class="btn s" style="margin-top:12px" data-go="${d}">Target set karo</button></div>`;
+return`<div class="glass c"><h2>${lbl}</h2><div class="mu">Main: <b style="color:var(--tx)">${cname(t.p)}</b></div>${t.a?`<div class="mu">Alternate: ${cname(t.a)}</div>`:""}<div class="mu">${t.hrs} ghante · ${t.done||0}% hua</div><div class="bar"><i style="width:${t.done||0}%"></i></div><button class="btn s" style="margin-top:12px" data-go="${d}">Edit / Update</button></div>`}
+function home(){const dl=daysLeft(),tot=allC().length,dn=doneCount(),left=tot-dn,pace=dl>0?(left/dl).toFixed(2):"—";
+return`<div class="grid"><div class="glass c"><p class="mu">Exam me baaki</p><div class="big">${dl>0?dl:0} <span style="font-size:20px">din</span></div><p class="mu">Exam: ${new Date(D.exam).toLocaleDateString("en-IN",{day:"numeric",month:"short",year:"numeric"})}</p></div>
+<div class="glass c"><p class="mu">Syllabus complete</p><div class="big">${Math.round(dn/tot*100)}%</div><div class="bar"><i style="width:${dn/tot*100}%"></i></div><p class="mu" style="margin-top:8px">${dn}/${tot} chapters · roz ${pace} chapter chahiye</p></div></div>
+<div class="grid" style="margin-top:14px">${tcard(today(),"Aaj ka target")}${tcard(addD(today(),1),"Kal ka target")}</div>`}
+
+function opts(sel,blank){let h=blank?`<option value="">— koi nahi —</option>`:"";for(const k in S0){h+=`<optgroup label="${S0[k].n}">`+allC().filter(c=>c.k==k).map(c=>`<option value="${c.id}" ${sel==c.id?"selected":""}>${c.n}</option>`).join("")+"</optgroup>"}return h}
+function plan(){const t=D.t[selD]||{p:"A0",a:"",hrs:D.goal,done:0,reason:"",note:""},past=selD<=today();
+return`<div class="glass c" style="max-width:560px;margin:auto"><h2>Daily Target</h2>
+<label>Date</label><input type="date" id="pd" value="${selD}">
+<label>Main chapter (aaj/us din ka target)</label><select id="pp">${opts(t.p)}</select>
+<label>Alternate chapter (backup)</label><select id="pa">${opts(t.a,1)}</select>
+<label>Kitne ghante padhna hai</label><input type="number" id="ph" min="0.5" max="16" step="0.5" value="${t.hrs}">
+${past?`<label>Kitna pura hua: <span id="pv">${t.done||0}</span>%</label><input type="range" id="pdn" min="0" max="100" step="5" value="${t.done||0}">
+<label>Agar pura nahi hua to kyun?</label><select id="pr"><option value="">—</option>${RS.map(r=>`<option ${t.reason==r?"selected":""}>${r}</option>`).join("")}</select>
+<textarea id="pn" rows="2" placeholder="Apni baat likho (optional)">${t.note||""}</textarea>`:`<p class="mu" style="margin-top:12px">Progress aur reason us din (ya uske baad) update karna.</p>`}
+<button class="btn" id="psv">Save</button></div>`}
+function syl(){let h="";for(const k in S0){const cs=allC().filter(c=>c.k==k),d=cs.filter(c=>(D.st[c.id]||0)>=2).length;
+h+=`<div class="glass c" style="margin-bottom:14px"><h2 style="color:${S0[k].c}">${S0[k].n}</h2><p class="mu">${d}/${cs.length} done</p><div class="bar"><i style="width:${d/cs.length*100}%"></i></div>`+cs.map(c=>`<div class="row"><span>${c.n}</span><button class="tag st${D.st[c.id]||0}" data-c="${c.id}">${ST[D.st[c.id]||0]}</button></div>`).join("")+`<div style="margin-top:10px"><button class="btn s" data-add="${k}">+ Chapter / Unit add karo</button></div></div>`}
+return h+`<p class="mu" style="text-align:center">Chapter list ICAI new scheme ke hisaab se hai. Final check icai.org ke Foundation syllabus se zaroor kar lena.</p>`}
+function cal(){const y=cm.getFullYear(),m=cm.getMonth(),f=new Date(y,m,1).getDay(),n=new Date(y,m+1,0).getDate();
+let c=["S","M","T","W","T","F","S"].map(x=>`<div class="h">${x}</div>`).join("")+'<div class="x"></div>'.repeat(f);
+for(let i=1;i<=n;i++){const d=dk(new Date(y,m,i)),t=D.t[d];let bg="";if(t){const q=t.done||0;bg=d>today()?"background:rgba(10,132,255,.3)":`background:${q>=80?"rgba(48,209,88,.5)":q>=40?"rgba(255,159,10,.5)":"rgba(255,69,58,.45)"}`}
+c+=`<div style="${bg}" class="${d==today()?"t":""}" data-go="${d}">${i}</div>`}
+return`<div class="glass c" style="max-width:560px;margin:auto"><div class="row" style="border:0"><button class="btn s" data-cm="-1">‹</button><h2 style="margin:0">${cm.toLocaleDateString("en-IN",{month:"long",year:"numeric"})}</h2><button class="btn s" data-cm="1">›</button></div><div class="cal">${c}</div><p class="mu" style="margin-top:14px;font-size:12px">🟢 80%+ &nbsp; 🟠 40-79% &nbsp; 🔴 40% se kam &nbsp; 🔵 aage ka target. Din par tap karke target set/edit karo.</p></div>`}
+function ins(){const ds=Object.keys(D.t).filter(d=>d<=today()&&D.t[d].done!=null).sort(),L=ds.slice(-14);
+if(!L.length)return`<div class="glass c"><h2>Insights</h2><p class="mu">Pehle kuch din ka target aur progress save karo. Phir yahan analysis dikhega.</p></div>`;
+const avgD=L.reduce((a,d)=>a+(D.t[d].done||0),0)/L.length,pl=L.reduce((a,d)=>a+D.t[d].hrs,0)/L.length,ac=L.reduce((a,d)=>a+D.t[d].hrs*(D.t[d].done||0)/100,0)/L.length;
+let st=0;for(let d=today();;d=addD(d,-1)){if(D.t[d]&&(D.t[d].done||0)>=80)st++;else if(d==today())continue;else break}
+const rc={};L.forEach(d=>{const r=D.t[d].reason;if(r&&(D.t[d].done||0)<80)rc[r]=(rc[r]||0)+1});const top=Object.entries(rc).sort((a,b)=>b[1]-a[1]);
+let x="";
+if(pl>ac*1.4)x+=`<div class="ins b">⚠️ Tum roz ~${pl.toFixed(1)} ghante ka target rakh rahe ho par asal me ~${ac.toFixed(1)} ghante ho paa rahe hain. Target zyada hai. Kal se ~${Math.max(1,Math.round(ac*1.15*2)/2)} ghante rakho.</div>`;
+else if(avgD>=85)x+=`<div class="ins g">✅ Target bilkul sahi set ho raha hai. Thoda badhane ka try kar sakte ho.</div>`;
+else x+=`<div class="ins w">Target theek hai par consistency thodi kam hai (${Math.round(avgD)}% avg). Chhota target rakho, pura karo.</div>`;
+if(top[0])x+=`<div class="ins ${top[0][1]>=3?"b":"w"}">Sabse badi dikkat: <b>${top[0][0]}</b> (${top[0][1]} baar). ${/Phone/.test(top[0][0])?"Padhte waqt phone dusre room me rakho.":/zyada/.test(top[0][0])?"Target kam karo.":/Concept/.test(top[0][0])?"Us chapter ka alternate lo aur video/teacher se doubt clear karo.":"Is par kaam karo."}</div>`;
+const sk=L.filter(d=>(D.t[d].done||0)<40).length;if(sk>=3)x+=`<div class="ins b">Pichhle ${L.length} dino me ${sk} din 40% se kam rahe. Plan galat ho sakta hai, galti tumhari mehnat me nahi.</div>`;
+const sj=Object.keys(S0).map(k=>{const cs=allC().filter(c=>c.k==k);return`<div class="row"><span>${S0[k].n}</span><b>${cs.filter(c=>(D.st[c.id]||0)>=2).length}/${cs.length}</b></div>`}).join("");
+return`<div class="grid"><div class="glass c"><p class="mu">Avg completion (14 din)</p><div class="big">${Math.round(avgD)}%</div></div><div class="glass c"><p class="mu">Streak (80%+)</p><div class="big">${st} 🔥</div></div><div class="glass c"><p class="mu">Plan vs actual / din</p><div class="big" style="font-size:30px">${pl.toFixed(1)}h → ${ac.toFixed(1)}h</div></div></div>
+<div class="glass c" style="margin-top:14px"><h2>Analysis</h2>${x}</div><div class="glass c" style="margin-top:14px"><h2>Subject progress</h2>${sj}</div>`}
+function pro(){return`<div class="glass c" style="max-width:520px;margin:auto"><div class="logo" style="margin-bottom:10px">${(D.name||"S")[0].toUpperCase()}</div><h2>Profile</h2><p class="mu">${U}</p>
+<label>Naam</label><input id="fn" value="${D.name}"><label>Exam ki date</label><input type="date" id="fe" value="${D.exam}"><label>Roz ke ghante (default target)</label><input type="number" id="fg" min="1" max="16" step="0.5" value="${D.goal}">
+<button class="btn" id="fs">Save profile</button><button class="btn" style="background:rgba(127,127,127,.2);color:var(--tx)" id="fx">Data backup (JSON copy)</button></div>`}
+
+function bind(){const v=$("#v");
+v.querySelectorAll("[data-go]").forEach(b=>b.onclick=()=>{selD=b.dataset.go;tab="plan";nav();render()});
+v.querySelectorAll("[data-c]").forEach(b=>b.onclick=()=>{const i=b.dataset.c;D.st[i]=((D.st[i]||0)+1)%4;save();const y=scrollY;render();scrollTo(0,y)});
+v.querySelectorAll("[data-cm]").forEach(b=>b.onclick=()=>{cm=new Date(cm.getFullYear(),cm.getMonth()+ +b.dataset.cm,1);render()});
+v.querySelectorAll("[data-add]").forEach(b=>b.onclick=()=>{const n=prompt("Chapter / unit ka naam?");if(n&&n.trim()){D.custom.push({id:"X"+Date.now(),k:b.dataset.add,n:n.trim()});save();render()}});
+if($("#pd"))$("#pd").onchange=e=>{selD=e.target.value||today();render()};
+if($("#pdn"))$("#pdn").oninput=e=>$("#pv").textContent=e.target.value;
+if($("#psv"))$("#psv").onclick=()=>{D.t[selD]={p:$("#pp").value,a:$("#pa").value,hrs:+$("#ph").value||D.goal,done:$("#pdn")?+$("#pdn").value:(D.t[selD]?.done||0),reason:$("#pr")?$("#pr").value:"",note:$("#pn")?$("#pn").value:""};save();$("#psv").textContent="Saved ✓"};
+if($("#fs"))$("#fs").onclick=()=>{D.name=$("#fn").value||D.name;D.exam=$("#fe").value||D.exam;D.goal=+$("#fg").value||6;save();$("#fs").textContent="Saved ✓";$("#hi").textContent="Hi, "+D.name+" 👋"};
+if($("#fx"))$("#fx").onclick=async()=>{const s=JSON.stringify(D);try{await navigator.clipboard.writeText(s);$("#fx").textContent="Copied ✓"}catch(e){prompt("Copy karo:",s)}}}
+const ses=g("ca_ses");if(ses)start(ses);
+</script></body></html>
